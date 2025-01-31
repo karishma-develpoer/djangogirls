@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+   
+    <div class="card">
+        <h2>Login Form</h2>
+
+        
+        <form class="form" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="user"  name="username" id="username">
+            <input type="password" placeholder="password" name="password" id="password">
+            <button type="submit" class="login_btn">sumbit</button>
+
+
+        </form>
+
+       
+        {% if msg %}
+
+    <div class="text-danger">
+
+        <strong>{{msg}}</strong>
+    </div>
+    {% endif %}
+    </div>
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rejester</title>
+    <link rel="stylesheet" href="{% static 'css/singup.css' %}">
+</head>
+<body>
+    <!-- <h2>singnup</h2> -->
+    <!-- {% if messages %}
+    <div class="text-danger">
+        {% for message in messages %}
+            <strong>{{ message }}</strong>
+        {% endfor %}
+    </div>
+{% endif %} -->
+    
+
+        <!-- <label for="username" ></label>
+        <input type="text" name="username" placeholder="username" id="username"><br>
+
+        <label for="password "></label>
+        <input type="password " name="password" placeholder="password" id="paasword"><br>
+
+        <label for="email"></label>
+        <input type="email" name="email" placeholder="email" id="email"><br>
+
+        <label for="confirm_password paasword"></label>
+        <input type="password" name=" confirm_password"  placeholder="confirm_password paasword" id="confourm password"><br>
+
+        <button> submit</button> -->      <!-- FORMULAIRE -->
+                <!-- FORMULAIRE DE CONNEXION -->
+    <div class="card">
+        <h2>Signup Form</h2>
+
+            <!-- SE CONNECTER / S'INSCRIRE -->
+        <!-- <div class="login_register">
+            <a href="
+https://codepen.io/pen?template=gOEqMVq
+" class="login" target="blank">Login</a>
+            <a href="
+https://codepen.io/pen?template=VwRgKYB
+" class="register" target="blank">Signup</a>
+        </div> -->
+
+        <form class="form"  method="POST">
+            {% csrf_token%}
+            <input type="text" placeholder="user" name="username" class="email">
+            <input type="email" placeholder="Email Adress" name="email" class="email">
+            <input type="password" placeholder="password" name="password" class="pass">
+            <input type="password" placeholder="Confirm Password"  name="confirm_password"class="confirm_pass">
+            <button type="submit"  class="login_btn">Singup</button>
+        </form>
+
+            <!-- MOT DE PASSE OUBLIE ? -->
+        <!-- <a href="#" class="fp">Forgot password?</a> -->
+
+            <!-- BOUTTON LOGIN -->
+            {% if messages %}
+            <div class="text-danger">
+                {% for message in messages %}
+                    <strong>{{ message }}</strong>
+                {% endfor %}
+            </div>
+        {% endif %}
+            
+            
+    </div>
+        
+
+  
+    
+</body>
+</html>

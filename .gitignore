@@ -1,0 +1,27 @@
+#files
+*.env 
+.env* 
+*.local
+
+
+#folders
+migrations/
+media/
+__pycache__/
+venv/
+env/
+
+
+#databases
+local_settings.py
+db.sqlite3
+# Ignore __pycache__ folder
+__pycache__/
+
+# Ignore migrations folder
+blog/migrations/
+myapp/migrations/
+
+# Ignore other files (optional, if needed)
+*.pyc
+*.sqlite3
