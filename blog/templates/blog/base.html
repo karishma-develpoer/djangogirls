@@ -16,29 +16,23 @@
                 
                 <img src="{% static 'blog/icons/file-earmark-plus.svg' %}" alt=""> 
             </a>
-            <a href="/userlogout/" class="top-menu">userlogout</a>
-            <a href="login/" class="top-menu"><img width="40px" src="{% static 'css/image/login.png' %}" > 
-            </a>
-            <a href="singup/" class="top-menu"> <img width="40px" src="{% static 'css/image/signup.png' %}" ></a>
 
 
-            <a href="myapp/" class="top-menu">polls</a> 
 
-
-            <!-- {% if user.is_authenticated %}
-     User logged in -->
-    <!-- <a href="/userlogout/" class="top-menu">Logout</a> -->
-    <!-- <a href="myapp/" class="top-menu">Polls</a> -->
+            {% if user.is_authenticated %}
+     User logged in
+    <a     style="font-size: 30px;" href="/userlogout/" class="top-menu">Logout</a>
+    <a  style="font-size: 30px;"    href="myapp/" class="top-menu">Polls</a>
     <!-- <a href="profile/" class="top-menu">Profile</a> -->
-<!-- {% else %} -->
-    <!-- User not logged in -->
-    <!-- <a href="login/" class="top-menu">Login</a> -->
-    <!-- <a href="singup/" class="top-menu">Signup</a> -->
-<!-- {% endif %}  -->
+{% else %}
+    User not logged in
+    <a    style="font-size: medium;"  href="singup/" class="top-menu">Signup</a>
+{% endif %} 
 
 
             <h1><a href="/">Django Girls Blog</a></h1>
-            <h1 style="color: cyan;">Hii {{request.user.username}}</h1>
+            <!-- <h1 style="color: cyan;">Hii {{request.user.username}}</h1> -->
+            <h1 style="color:white; direction: rtl;  font-size: 20px;">Hii {{request.user.username}}</h1>
               
           </div>
          

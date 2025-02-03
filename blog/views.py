@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
-from .models import Post
+from .models import Post,Category
 from .forms import PostForm 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm
@@ -10,9 +10,23 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 
 
-def post_list(request):
-     posts = Post.objects.filter().order_by('published_date')
-     return render(request, './blog/post_list.html', {"posts":posts})
+def post_list(request, category_id=None):
+    # Saari categories ko fetch karen
+    categories = Category.objects.all()
+    
+    # Agar category_id diya gaya ho to us category ke posts ko filter karen
+    if category_id:
+        category = Category.objects.get(id=category_id)
+        posts = Post.objects.filter(category=category)
+    else:
+        # Agar category_id nahi diya gaya ho to sabhi posts dikhaye jaayenge
+        posts = Post.objects.all()
+
+    return render(request, 'blog/post_list.html', {'posts': posts, 'categories': categories})
+
+# def post_list(request):
+#      posts = Post.objects.filter().order_by('published_date')
+#      return render(request, './blog/post_list.html', {"posts":posts})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -107,11 +121,7 @@ def userlogout(request):
 
         
 
-      
-      
-   
-   
-   
+
    
    
    

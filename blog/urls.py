@@ -8,6 +8,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('singup/', views.singup, name='singup'),
      path('userlogout/', views.userlogout, name='userlogout'),
+     path('category/<int:category_id>/', views.post_list, name='post_list_by_category'),
 
 
 ]
