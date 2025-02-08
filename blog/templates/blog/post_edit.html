@@ -1,16 +1,57 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h2>New post</h2>
-    <form method="POST" class="post-form">
+    <h2>New Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         
-         {{ form.as_p }}
-      
-        <button type="submit" class="save btn btn-secondary">Save</button>
+        <!-- Title Field -->
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+        </div>
+
+        <!-- Text Field -->
+        <div class="mb-3">
+            <label for="text" class="form-label">Text</label>
+            <textarea class="form-control" id="text" name="text" rows="5" placeholder="Enter post text"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+        </div>
 
 
-
+        <div class="mb-3">
+            <label for=" thambel image" class="form-label">thambelimage</label>
+            <input type="file" class="form-control" id="image" name="thambelimage">
+        </div>
        
+        
+
+        <!-- Category Select Dropdown -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category">
+                <option selected>Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Tag User Select Dropdown -->
+        <div class="mb-3">
+            <label for="taguser" class="form-label">Tag User(s)</label>
+            <select class="form-select" multiple id="taguser" name="taguser">
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {% endblock %}

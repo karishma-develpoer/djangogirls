@@ -1,19 +1,51 @@
-{% extends 'blog/base.html' %}
 
+{% extends 'blog/base.html' %}
+{% load static %}
 {% block content %}
+<style>
+    .post-container {
+    display: flex;
+    justify-content: space-between; /* Spreads out the content */
+    align-items: center; /* Centers the items vertically */
+}
+
+.post-text {
+    flex: 1; /* Text takes up the remaining space */
+    margin-right: 20px; /* Adds space between the text and the image */
+}
+
+.post-image img {
+    height: 192px; /* Adjust image height */
+    max-width: 100%; /* Ensures image does not overflow */
+}
+.myclass {
+  border-radius: 50%;
+}
+
+</style>
+
     <article class="post">
         <aside class="actions">
-            <a class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
+            <a style class="btn btn-secondary" href="{% url 'post_edit' pk=post.pk %}">
                 {% include './icons/file-earmark-plus.svg' %} 
             </a>
         </aside>
        
-        {% if post.published_date %}
-            <time class="date">
-                {{ post.published_date }}
-            </time>
-        {% endif %}
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+    <div class="post-container">
+        <div class="post-text">
+           
+            <img style="height: 30px; border-radius: 10px;" src="{{ post.thambelimage.url }}" alt="Image for {{ post.title }}">
+  
+        
+           
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.text }}</p> <!-- You can add your post content here -->
+        </div>
+        <div class="post-image">
+            <img style="height: 192px;" src="{{ post.image.url }}" alt="Image for {{ post.title }}">
+        </div>
+    </div>
+
     </article>
 {% endblock %}

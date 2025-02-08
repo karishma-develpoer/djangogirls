@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
-from .models import Post,Category
+from .models import Post,Category,Tags
 from .forms import PostForm 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm
@@ -10,19 +10,25 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 
 
-def post_list(request, category_id=None):
-    # Saari categories ko fetch karen
+def post_list(request, category_id=None ,taguser_id=None):
     categories = Category.objects.all()
-    
-    # Agar category_id diya gaya ho to us category ke posts ko filter karen
+
+    # Fetch tags (Assuming the Tags model is related to Post model)
+    tags = Tags.objects.all()
+
     if category_id:
         category = Category.objects.get(id=category_id)
         posts = Post.objects.filter(category=category)
     else:
-        # Agar category_id nahi diya gaya ho to sabhi posts dikhaye jaayenge
         posts = Post.objects.all()
 
-    return render(request, 'blog/post_list.html', {'posts': posts, 'categories': categories})
+    if taguser_id:
+        tag = User.objects.get(id=taguser_id)
+        print(tag)
+        posts = posts.filter(taguser=tag)   
+
+    return render(request, 'blog/post_list.html', {'posts': posts, 'categories': categories, 'tags': tags})
+
 
 # def post_list(request):
 #      posts = Post.objects.filter().order_by('published_date')
@@ -32,24 +38,50 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/blog_deatail.html', {'post': post})
 
-def post_new(request,):
-  
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm()
 
-    return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_new(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        image = request.FILES.get('image')
+        thambelimage= request.FILES.get('thambelimage')
+        category_id = request.POST.get('category')
+        taguser_ids = request.POST.getlist('taguser')  # Tag users ko multiple select karna
+        print(thambelimage)
+        category = Category.objects.get(id=category_id)  # Category ko fetch karte hain
+
+        post = Post(
+            title=title,
+            text=text,
+            image=image,
+            category=category,
+            author=request.user,
+            thambelimage=thambelimage
+        )
+        post.save()
+
+        # Tag users ko save karna (Many-to-many relationship)
+        for tag_user_id in taguser_ids:
+            user = User.objects.get(id=tag_user_id)
+            post.taguser.add(user)
+
+        post.save()  # Save post after adding tag users
+
+        return redirect('post_detail', pk=post.pk)
+
+    else:
+        categories = Category.objects.all()
+        users = User.objects.all()  # All users to tag in the post
+        return render(request, 'blog/post_edit.html', {'categories': categories, 'users': users})
+
+
+
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
+    if request.method == "POST":     
         form = PostForm(request.POST, instance=post)
+        
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -116,7 +148,13 @@ def singup(request):
 def userlogout(request):
     logout(request)
     msg="user logout sussfully"
-    return render(request,'blog/login.html',{"msg":msg})
+    return redirect('post_list')
+
+
+
+
+# 
+
 
 
         

@@ -1,28 +1,87 @@
 {% extends 'blog/base.html' %}
-
+{% load static %}
 {% block content %}
+    <style>
+        .post-content {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
 
-    <!-- Categories ki list -->
+        .post-image {
+            margin-left: 20px;
+            height: 192px;
+        }
+
+        .text-content {
+            flex: 1;
+            padding-left: 118px;
+        }
+    </style>
+
+    <!-- Categories Section
     <div class="categories">
         <h3>Categories</h3>
         <ul>
             {% for category in categories %}
-                <li><a href="{% url 'post_list_by_category' category.id %}">{{ category.name }}</a></li>
+                <li><a href="{% url 'post_list_by_category' category.pk %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div> -->
+
+    <!-- Tags Section -->
+    <div class="tags">
+        <h3>Tags</h3>
+        <ul>
+            {% for tag in tags %}
+                <li><a href="">{{ tag.tag_name }}</a></li>
             {% endfor %}
         </ul>
     </div>
 
-    <!-- Posts ki list -->
+    <!-- Posts Section -->
     <div class="posts">
         {% for post in posts %}
             <article class="post">
                 <time class="date">
-                    {{ post.published_date }}
+                    {{ post.created_date }}
                 </time>
-                <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-                <p>{{ post.text|linebreaksbr }}</p>
+                <div class="post-content">
+                    {% if post.image %}
+                        <img class="post-image" src="{{ post.image.url }}" alt="Image for {{ post.title }}">
+
+                      
+                    {% endif %}
+                    
+                    <div class="text-content">
+                        <h2 style="color: rgb(218, 45, 68);">
+                            <a href="{% url 'post_list_by_category' post.category.id %}" style="color: rgb(45, 163, 128);">{{  post.category.name }}</a><br>
+                            <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                        </h2>
+                        <p style="color: rgb(42, 165, 165);">{{ post.text|linebreaksbr }}</p>
+
+                        <!-- Post ke tags ko dikhana -->
+                        <div class="tags">
+                            {% if post.thambelimage %}
+
+                            <img style="height: 30px; border-radius: 10px;" src="{{ post.thambelimage.url }}" alt="Image for {{ post.title }}">
+                            {% endif %}
+                            <!-- <img src="{% static 'css/hands.png' %}" style="height: 30px; border-radius: 10px ;" alt="Icon Image"> -->
+                           
+                            <h4>Tags:</h4>
+                            <ul>
+                                {% for tag in post.taguser.all %}
+                                    <li><strong>{{ tag.username }}</strong></li>
+                                    <a href="{% url 'post_list_by_taguser' tag.id %}" style="color: rgb(45, 163, 128);">{{ tag.username }}</a><br>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </article>
         {% endfor %}
     </div>
 
 {% endblock %}
+
